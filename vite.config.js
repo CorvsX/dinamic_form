@@ -1,26 +1,18 @@
-import tsconfigPaths from "vite-tsconfig-paths";
-import { defineConfig } from "vite";
-import path from "node:path";
+import { fileURLToPath, URL } from 'node:url'
 
-const isGitHubPages = true;
-const folderName = path.basename(process.cwd()) + "/";
-const mode = process.env.NODE_ENV === "production" ? "production" : "development";
-const base = mode === "production" && isGitHubPages ? "/" + folderName : "/";
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import vueDevTools from 'vite-plugin-vue-devtools'
 
+// https://vite.dev/config/
 export default defineConfig({
-  root: "src",
-  base,
-  mode,
-  envDir: "../",
-  publicDir: "../public",
-  plugins: [tsconfigPaths()],
+  plugins: [
+    vue(),
+    vueDevTools(),
+  ],
   resolve: {
     alias: {
-      "@": new URL("./src", import.meta.url).pathname
-    }
+      '@': fileURLToPath(new URL('./src', import.meta.url))
+    },
   },
-  build: {
-    outDir: "../dist",
-    assetsDir: "./"
-  }
-});
+})
